@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package interfaces;
 
 import java.awt.Color;
+import java.sql.Connection;
 import javax.swing.JFrame;
 
 /**
@@ -13,12 +10,14 @@ import javax.swing.JFrame;
  */
 public class Prestamos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaPrincipal
-     */
-    public Prestamos() {
+    private final Connection con;
+    
+    public Prestamos(Connection con) {
+        this.con = con;
         initComponents();
         setLocationRelativeTo(null);
+        this.setTitle("Alta Docente");
+        this.setResizable(false);
     }
 
     /**
@@ -247,43 +246,32 @@ public class Prestamos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        LogIn ventana = new LogIn(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new LogIn(con).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
         setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new PaginaPrincipal(con).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Docentes ventana = new Docentes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Material ventana = new Material(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Material(con).setVisible(true);
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Consultar(con).setVisible(true);
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
@@ -291,24 +279,18 @@ public class Prestamos extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        NuevoPrestamo ventana = new NuevoPrestamo(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new NuevoPrestamo(con).setVisible(true);
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        FinalizarPrestamo ventana = new FinalizarPrestamo(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new FinalizarPrestamo(con).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Ajustes ventana = new Ajustes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Ajustes(con).setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
 

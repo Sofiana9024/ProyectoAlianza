@@ -1,11 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package interfaces;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import java.sql.Connection;
+import javax.swing.table.DefaultTableModel;
+import clases.*;
 
 /**
  *
@@ -13,10 +12,10 @@ import javax.swing.JFrame;
  */
 public class Ajustes extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaPrincipal
-     */
-    public Ajustes() {
+    private final Connection con;
+    
+    public Ajustes(Connection con) {
+        this.con = con;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -31,14 +30,14 @@ public class Ajustes extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        btnAjustes = new javax.swing.JLabel();
+        btnPrestamos = new javax.swing.JLabel();
+        btnDocentes = new javax.swing.JLabel();
+        btnMaterial = new javax.swing.JLabel();
+        btnConsultar = new javax.swing.JLabel();
+        btnPagPrincipal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        btnLogIn = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -46,10 +45,10 @@ public class Ajustes extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
+        btnUsuario = new javax.swing.JPanel();
         Agregar = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
+        btnPassword = new javax.swing.JPanel();
         Eliminar = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
 
@@ -60,64 +59,64 @@ public class Ajustes extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 29, 61));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ajustes (1).png"))); // NOI18N
-        jLabel2.setEnabled(false);
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 614, 65, -1));
+        btnAjustes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ajustes (1).png"))); // NOI18N
+        btnAjustes.setEnabled(false);
+        jPanel1.add(btnAjustes, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 614, 65, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/libro-marcador-amarillo.png"))); // NOI18N
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPrestamos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/libro-marcador-amarillo.png"))); // NOI18N
+        btnPrestamos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
+                btnPrestamosMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 60, 70));
+        jPanel1.add(btnPrestamos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 60, 70));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/taller (1).png"))); // NOI18N
-        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnDocentes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/taller (1).png"))); // NOI18N
+        btnDocentes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel10MouseClicked(evt);
+                btnDocentesMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, -1));
+        jPanel1.add(btnDocentes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, -1));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/resaltador.png"))); // NOI18N
-        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnMaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/resaltador.png"))); // NOI18N
+        btnMaterial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel11MouseClicked(evt);
+                btnMaterialMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
+        jPanel1.add(btnMaterial, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, -1, -1));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/buscar-alt-amarillo.png"))); // NOI18N
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/buscar-alt-amarillo.png"))); // NOI18N
+        btnConsultar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
+                btnConsultarMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        jPanel1.add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/hogar.png"))); // NOI18N
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPagPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/hogar.png"))); // NOI18N
+        btnPagPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
+                btnPagPrincipalMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel1.add(btnPagPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, 700));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Quicksand Light", 0, 18)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/usuario (3).png"))); // NOI18N
-        jLabel4.setText("Cerrar Sesión");
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLogIn.setFont(new java.awt.Font("Quicksand Light", 0, 18)); // NOI18N
+        btnLogIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/usuario (3).png"))); // NOI18N
+        btnLogIn.setText("Cerrar Sesión");
+        btnLogIn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
+                btnLogInMouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 10, 170, 30));
+        jPanel2.add(btnLogIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 10, 170, 30));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/salida.png"))); // NOI18N
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -156,132 +155,119 @@ public class Ajustes extends javax.swing.JFrame {
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 1100, 66));
 
-        jPanel7.setBackground(new java.awt.Color(1, 75, 142));
-        jPanel7.setPreferredSize(new java.awt.Dimension(260, 260));
-        jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnUsuario.setBackground(new java.awt.Color(1, 75, 142));
+        btnUsuario.setPreferredSize(new java.awt.Dimension(260, 260));
+        btnUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel7MouseClicked(evt);
+                btnUsuarioMouseClicked(evt);
             }
         });
-        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        btnUsuario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Agregar.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         Agregar.setForeground(new java.awt.Color(255, 255, 255));
         Agregar.setText("Usuario");
-        jPanel7.add(Agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, 43));
+        btnUsuario.add(Agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, 43));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/usuario-bnco.png"))); // NOI18N
-        jPanel7.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 113, -1, -1));
+        btnUsuario.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 113, -1, -1));
 
-        jPanel4.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
+        jPanel4.add(btnUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 110, -1, -1));
 
-        jPanel8.setBackground(new java.awt.Color(1, 75, 142));
-        jPanel8.setPreferredSize(new java.awt.Dimension(260, 260));
-        jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPassword.setBackground(new java.awt.Color(1, 75, 142));
+        btnPassword.setPreferredSize(new java.awt.Dimension(260, 260));
+        btnPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel8MouseClicked(evt);
+                btnPasswordMouseClicked(evt);
             }
         });
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        btnPassword.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Eliminar.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         Eliminar.setForeground(new java.awt.Color(255, 255, 255));
         Eliminar.setText("Contraseña");
-        jPanel8.add(Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, 43));
+        btnPassword.add(Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, 43));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/llave.png"))); // NOI18N
-        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 113, -1, -1));
+        btnPassword.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 113, -1, -1));
 
-        jPanel4.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, -1, -1));
+        jPanel4.add(btnPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, -1, -1));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 270, 1200, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
+    private void btnLogInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogInMouseClicked
         this.dispose();
-        LogIn ventana = new LogIn(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jLabel4MouseClicked
+        new LogIn(con).setVisible(true);
+        //LogIn ventana = new LogIn(); // Crea una instancia de Ventana2
+        //ventana.setVisible(true);
+    }//GEN-LAST:event_btnLogInMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
         setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
+    private void btnPagPrincipalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPagPrincipalMouseClicked
         this.dispose();
-        PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jLabel5MouseClicked
+        new PaginaPrincipal(con).setVisible(true);
+    }//GEN-LAST:event_btnPagPrincipalMouseClicked
 
-    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+    private void btnDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDocentesMouseClicked
 
         
-    }//GEN-LAST:event_jLabel10MouseClicked
+    }//GEN-LAST:event_btnDocentesMouseClicked
 
-    private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        // TODO add your handling code here:
+    private void btnMaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialMouseClicked
         this.dispose();
-        Material ventana = new Material(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jLabel11MouseClicked
+        new Material(con).setVisible(true);
+    }//GEN-LAST:event_btnMaterialMouseClicked
 
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
+    private void btnConsultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarMouseClicked
         this.dispose();
-        Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jLabel12MouseClicked
+        new Consultar(con).setVisible(true);
+    }//GEN-LAST:event_btnConsultarMouseClicked
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        // TODO add your handling code here:
+    private void btnPrestamosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPrestamosMouseClicked
         this.dispose();
-        Prestamos ventana = new Prestamos(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jLabel9MouseClicked
+        new Prestamos(con).setVisible(true);
+    }//GEN-LAST:event_btnPrestamosMouseClicked
 
-    private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
-        // TODO add your handling code here:
+    private void btnUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUsuarioMouseClicked
         this.dispose();
-        Usuario ventana = new Usuario(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jPanel7MouseClicked
+        new Usuario(con).setVisible(true);
+    }//GEN-LAST:event_btnUsuarioMouseClicked
 
-    private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
-        // TODO add your handling code here:
+    private void btnPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPasswordMouseClicked
         this.dispose();
-        Password ventana = new Password(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jPanel8MouseClicked
+        new Password(con).setVisible(true);
+    }//GEN-LAST:event_btnPasswordMouseClicked
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Agregar;
     private javax.swing.JLabel Eliminar;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel btnAjustes;
+    private javax.swing.JLabel btnConsultar;
+    private javax.swing.JLabel btnDocentes;
+    private javax.swing.JLabel btnLogIn;
+    private javax.swing.JLabel btnMaterial;
+    private javax.swing.JLabel btnPagPrincipal;
+    private javax.swing.JPanel btnPassword;
+    private javax.swing.JLabel btnPrestamos;
+    private javax.swing.JPanel btnUsuario;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     // End of variables declaration//GEN-END:variables
 }

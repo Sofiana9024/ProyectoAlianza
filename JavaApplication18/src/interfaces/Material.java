@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package interfaces;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import java.sql.Connection;
+import javax.swing.table.DefaultTableModel;
+import clases.*;
 
 /**
  *
@@ -13,12 +13,17 @@ import javax.swing.JFrame;
  */
 public class Material extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaPrincipal
-     */
-    public Material() {
+    private final Connection con;
+    private final Materiales material;
+    
+    public Material(Connection con) {
+        this.con = con;
+        material = new Materiales(this.con);
         initComponents();
-        setLocationRelativeTo(null);
+        actualizaTabla();
+        this.setTitle("Consulta Material");
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     /**
@@ -46,10 +51,6 @@ public class Material extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        salon1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        profe1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -86,6 +87,8 @@ public class Material extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jPanel27 = new javax.swing.JPanel();
         jLabel36 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaMateriales = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -194,25 +197,6 @@ public class Material extends javax.swing.JFrame {
         jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, -1, 40));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 1100, 66));
-
-        salon1.setEditable(false);
-        salon1.setBackground(new java.awt.Color(255, 255, 255));
-        salon1.setColumns(20);
-        salon1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        salon1.setRows(5);
-        jScrollPane3.setViewportView(salon1);
-
-        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 140, 340, 240));
-
-        profe1.setEditable(false);
-        profe1.setBackground(new java.awt.Color(255, 255, 255));
-        profe1.setColumns(20);
-        profe1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        profe1.setRows(5);
-        profe1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane2.setViewportView(profe1);
-
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 340, 240));
 
         jLabel1.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -419,35 +403,43 @@ public class Material extends javax.swing.JFrame {
 
         jPanel4.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 430, 120, 40));
 
+        tablaMateriales.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaMateriales);
+
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 690, 260));
+
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 1200, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        LogIn ventana = new LogIn(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new LogIn(con).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
         setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new PaginaPrincipal(con).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Docentes ventana = new Docentes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
@@ -455,31 +447,23 @@ public class Material extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Consultar(con).setVisible(true);
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Prestamos ventana = new Prestamos(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        AltaMaterial ventana = new AltaMaterial(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new AltaMaterial(con).setVisible(true);
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        StockActual ventana = new StockActual(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new StockActual(con).setVisible(true);
     }//GEN-LAST:event_jPanel12MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -496,13 +480,14 @@ public class Material extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel24MouseClicked
 
     private void jPanel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel20MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        BajaMaterial ventana = new BajaMaterial(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new BajaMaterial(con).setVisible(true);
     }//GEN-LAST:event_jPanel20MouseClicked
 
-
+    public final void actualizaTabla(){
+        DefaultTableModel modelo = material.actualizaTablaMaterial();
+        this.tablaMateriales.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -557,9 +542,7 @@ public class Material extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea profe1;
-    private javax.swing.JTextArea salon1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablaMateriales;
     // End of variables declaration//GEN-END:variables
 }

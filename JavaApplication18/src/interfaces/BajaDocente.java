@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package interfaces;
 
 import java.awt.Color;
+import java.sql.Connection;
 import javax.swing.JFrame;
 
 /**
@@ -13,12 +10,13 @@ import javax.swing.JFrame;
  */
 public class BajaDocente extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PaginaPrincipal
-     */
-    public BajaDocente() {
+    private final Connection con;
+    public BajaDocente(Connection con) {
+        this.con = con;
         initComponents();
         setLocationRelativeTo(null);
+        this.setTitle("Baja Docente");
+        this.setResizable(false);
     }
 
     /**
@@ -247,22 +245,17 @@ public class BajaDocente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        LogIn ventana = new LogIn(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new LogIn(con).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
         setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new PaginaPrincipal(con).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
@@ -272,36 +265,27 @@ public class BajaDocente extends javax.swing.JFrame {
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         this.dispose();
-        Material ventana = new Material(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Material(con).setVisible(true);
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Consultar(con).setVisible(true);
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Prestamos ventana = new Prestamos(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Ajustes ventana = new Ajustes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Ajustes(con).setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Docentes ventana = new Docentes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
 
 

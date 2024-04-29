@@ -241,55 +241,43 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCerrarSesionMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        LogIn ventana = new LogIn(con); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new LogIn(con).setVisible(true);
     }//GEN-LAST:event_btnCerrarSesionMouseClicked
 
     private void btnPrestamosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPrestamosMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Prestamos ventana = new Prestamos(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_btnPrestamosMouseClicked
 
     private void btnDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDocentesMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Docentes ventana = new Docentes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_btnDocentesMouseClicked
 
     private void btnMaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Material ventana = new Material(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Material(con).setVisible(true);
     }//GEN-LAST:event_btnMaterialMouseClicked
 
     private void btnConsultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Consultar(con).setVisible(true);
+        //Consultar ventana = new Consultar(); // Crea una instancia de Ventana2
+        //ventana.setVisible(true);
     }//GEN-LAST:event_btnConsultarMouseClicked
 
     private void btnMaterialDisponibleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialDisponibleMouseClicked
-        // TODO add your handling code here:
         this.dispose();
-        StockActual ventana = new StockActual(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new StockActual(con).setVisible(true);
     }//GEN-LAST:event_btnMaterialDisponibleMouseClicked
 
     private void btnMaterialDisponibleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialDisponibleMousePressed
-        // TODO add your handling code here:
         btnMaterialDisponible.setForeground(Color.YELLOW);
         
     }//GEN-LAST:event_btnMaterialDisponibleMousePressed
 
     private void btnMaterialDisponibleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialDisponibleMouseReleased
-        // TODO add your handling code here:
         btnMaterialDisponible.setForeground(Color.WHITE);
     }//GEN-LAST:event_btnMaterialDisponibleMouseReleased
 
@@ -302,15 +290,13 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPrestamosMouseReleased
 
     private void btnLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogOutMouseClicked
-        // TODO add your handling code here:
         setExtendedState(JFrame.ICONIFIED);
     }//GEN-LAST:event_btnLogOutMouseClicked
 
     private void btnAjustesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAjustesMouseClicked
         // TODO add your handling code here:
         this.dispose();
-        Ajustes ventana = new Ajustes(); // Crea una instancia de Ventana2
-        ventana.setVisible(true);
+        new Ajustes(con).setVisible(true);
     }//GEN-LAST:event_btnAjustesMouseClicked
 
 
