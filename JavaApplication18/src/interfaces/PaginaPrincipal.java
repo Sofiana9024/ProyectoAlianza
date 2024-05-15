@@ -252,7 +252,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
     private void btnDocentesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDocentesMouseClicked
         this.dispose();
-        new Docentes(con).setVisible(true);
+        new DocentesI(con).setVisible(true);
     }//GEN-LAST:event_btnDocentesMouseClicked
 
     private void btnMaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialMouseClicked

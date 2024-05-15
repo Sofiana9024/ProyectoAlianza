@@ -8,11 +8,11 @@ import javax.swing.JFrame;
  *
  * @author monse
  */
-public class Docentes extends javax.swing.JFrame {
+public class DocentesI extends javax.swing.JFrame {
 
     private final Connection con;
     
-    public Docentes(Connection con) {
+    public DocentesI(Connection con) {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);

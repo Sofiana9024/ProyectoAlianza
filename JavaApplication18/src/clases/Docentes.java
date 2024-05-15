@@ -25,9 +25,9 @@ import java.util.Random;
 public class Docentes {
     private final Connection con;
     private ArrayList<ArrayList<Object>> lista = new ArrayList<>();
-    private final ArrayList<Object> IDEMPLEADO = new ArrayList();
-    private String idEmpleado[];
-    private int ultIdEmpleado=0;
+    private final ArrayList<Object> IDPERSONAL = new ArrayList();
+    private String idPersonal[];
+    private int ultIdPersonal=0;
     private Random rand = new Random();
 
     public Docentes(Connection con) {
@@ -92,6 +92,25 @@ public class Docentes {
         }
         return modelo;
     }
+    
+    public void obtenerIdDocente(){
+        try{
+            int cont = 0;
+            Statement sts = con.createStatement();
+            sts.execute("SELECT * FROM personal");
+            ResultSet rs = sts.getResultSet();
+            while(rs.next()){
+                IDPERSONAL.add(rs.getInt("id_pers"));
+                cont++;
+            }
+            idPersonal = new String[cont];
+            for(int i = 0; i<cont;i++ ){
+                idPersonal[i]=IDPERSONAL.get(i).toString();
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getNextException());
+        }
+    }
 
     public ArrayList<ArrayList<Object>> getLista() {
         return lista;
@@ -101,21 +120,22 @@ public class Docentes {
         this.lista = lista;
     }
 
-    public String[] getIdEmpleado() {
-        return idEmpleado;
+    public String[] getIdPersonal() {
+        return idPersonal;
     }
 
-    public void setIdEmpleado(String[] idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setIdPersonal(String[] idPersonal) {
+        this.idPersonal = idPersonal;
     }
 
-    public int getUltIdEmpleado() {
-        return ultIdEmpleado;
+    public int getUltIdPersonal() {
+        return ultIdPersonal;
     }
 
-    public void setUltIdEmpleado(int ultIdEmpleado) {
-        this.ultIdEmpleado = ultIdEmpleado;
+    public void setUltIdPersonal(int ultIdPersonal) {
+        this.ultIdPersonal = ultIdPersonal;
     }
+
 
     public Random getRand() {
         return rand;
