@@ -16,7 +16,7 @@ public class Prestamos extends javax.swing.JFrame {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);
-        this.setTitle("Alta Docente");
+        this.setTitle("Préstamos");
         this.setResizable(false);
     }
 

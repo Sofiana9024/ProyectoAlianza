@@ -16,7 +16,7 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);
-        this.setTitle("Finalizar Prestamo");
+        this.setTitle("Finalizar Préstamo");
         this.setResizable(false);
     }
 
