@@ -1,9 +1,14 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.sql.Connection;
 import javax.swing.JFrame;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -12,7 +17,8 @@ import java.sql.*;
 public class Prestamos extends javax.swing.JFrame {
 
     private final Connection con;
-    
+    private AdjustmentListener syncScrollListener;
+
     public Prestamos(Connection con) {
         this.con = con;
         initComponents();
@@ -23,10 +29,12 @@ public class Prestamos extends javax.swing.JFrame {
         profesores();
         cantidad();
         materiales();
+        
+        syncScrollBars();
     }
     
     private void profesores(){
-        String query3 = "SELECT nom_pers FROM personal";
+        String query3 = "SELECT personal.nom_pers FROM prestamo INNER JOIN personal ON prestamo.id_pers = personal.id_pers ORDER BY prestamo.fecha DESC";
         try {
             PreparedStatement ps3 = con.prepareStatement(query3);
             ResultSet rs3 = ps3.executeQuery();
@@ -41,15 +49,14 @@ public class Prestamos extends javax.swing.JFrame {
         }
     }
     private void cantidad(){
-        String query = "SELECT nom_mat, COUNT(*) AS cantidad FROM prestamo INNER JOIN material ON prestamo.id_mat = material.id_mat GROUP BY prestamo.id_mat";
+        String query = "SELECT cant_pres FROM prestamo ORDER BY fecha DESC";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             StringBuilder sb = new StringBuilder();
             while (rs.next()) {
-                String nombreMaterial = rs.getString("nom_mat");
-                int cantidad = rs.getInt("cantidad");
-                sb.append(nombreMaterial).append(": ").append(cantidad).append("\n");
+                String cantidad = rs.getString("cant_pres");
+                sb.append(cantidad).append("\n");
             }
             salon1.setText(sb.toString());
         } catch (SQLException ex) {
@@ -57,20 +64,38 @@ public class Prestamos extends javax.swing.JFrame {
         }
     }
     private void materiales(){
-        String query2 = "SELECT personal.nom_pers, material.nom_mat FROM prestamo INNER JOIN personal ON prestamo.id_pers = personal.id_pers INNER JOIN material ON prestamo.id_mat = material.id_mat";
+        String query2 = "SELECT material.nom_mat FROM prestamo INNER JOIN material ON prestamo.id_mat = material.id_mat ORDER BY prestamo.fecha DESC";
         try {
             PreparedStatement ps2 = con.prepareStatement(query2);
             ResultSet rs2 = ps2.executeQuery();
             StringBuilder sb2 = new StringBuilder();
             while (rs2.next()) {
-                String nombreProfesor = rs2.getString("nom_pers");
                 String nombreMaterial = rs2.getString("nom_mat");
-                sb2.append(nombreProfesor).append(": ").append(nombreMaterial).append("\n");
+                sb2.append(nombreMaterial).append("\n");
             }
             salon.setText(sb2.toString());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    private void syncScrollBars() {
+        JScrollBar scrollBar1 = jScrollPane1.getVerticalScrollBar();
+        JScrollBar scrollBar2 = jScrollPane2.getVerticalScrollBar();
+        JScrollBar scrollBar3 = jScrollPane3.getVerticalScrollBar();
+
+        syncScrollListener = new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                int value = ((JScrollBar) e.getSource()).getValue();
+                scrollBar1.setValue(value);
+                scrollBar2.setValue(value);
+                scrollBar3.setValue(value);
+            }
+        };
+
+        scrollBar1.addAdjustmentListener(syncScrollListener);
+        scrollBar2.addAdjustmentListener(syncScrollListener);
+        scrollBar3.addAdjustmentListener(syncScrollListener);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -227,6 +252,8 @@ public class Prestamos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(salon);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 150, 340, 240));
+
+        jScrollPane2.setToolTipText("");
 
         profe1.setEditable(false);
         profe1.setBackground(new java.awt.Color(255, 255, 255));
