@@ -20,13 +20,17 @@ public class Conexion {
     Connection con;
     
     public Connection Conexion(){
-        try{
-            //Class.forName("com.mysql.jdbc.Driver");
+        Connection con = null;
+        try {
+            // Cargar el controlador JDBC
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establecer la conexión
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/alianza", "root", "");
-            System.out.println("Se conectó (: ");
-        }catch(ClassNotFoundException | SQLException e){ //No encuentra el driver //Hay un error en el sql
-            System.out.println("Error" + e);
+
+            System.out.println("Conexion establecida correctamente (:");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Error al conectar a la base de datos: " + e.getMessage());
         }
         return con;
     }

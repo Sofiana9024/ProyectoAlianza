@@ -4,9 +4,6 @@ package interfaces;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import clases.Docentes;
-import clases.Materiales;
 
 /**
  *
@@ -15,15 +12,10 @@ import clases.Materiales;
 public class AltaDocente extends javax.swing.JFrame {
 
     private final Connection con;
-    private final Docentes docente;
     
     public AltaDocente(Connection con) {
         this.con = con;
-        docente = new Docentes(this.con);
         initComponents();
-        docente.obtenerIdDocente();
-        txtIdDocente.setEditable(false);
-        txtIdDocente.setText(String.valueOf(docente.getUltIdPersonal()));
         setLocationRelativeTo(null);
         this.setTitle("Alta Docente");
         this.setResizable(false);
@@ -58,15 +50,15 @@ public class AltaDocente extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        txtGrado = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtIdDocente = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
 
@@ -194,11 +186,11 @@ public class AltaDocente extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Grado");
-        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        jLabel15.setText("Salón");
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
-        txtGrado.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jPanel6.add(txtGrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
+        jTextField3.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
 
         jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, 900, 90));
 
@@ -210,17 +202,16 @@ public class AltaDocente extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Id");
-        jPanel8.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, 50));
+        jLabel1.setText("Nombre ");
+        jPanel8.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 50));
 
-        txtIdDocente.setEditable(false);
-        txtIdDocente.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        txtIdDocente.addActionListener(new java.awt.event.ActionListener() {
+        jTextField1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdDocenteActionPerformed(evt);
+                jTextField1ActionPerformed(evt);
             }
         });
-        jPanel8.add(txtIdDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
+        jPanel8.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
 
         jPanel4.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 900, 90));
 
@@ -232,20 +223,15 @@ public class AltaDocente extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Nombre");
-        jPanel10.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jLabel3.setText("Grado");
+        jPanel10.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
-        txtNombre.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jPanel10.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
+        jTextField2.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
+        jPanel10.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
 
         jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 900, 90));
 
         btnAgregar.setBackground(new java.awt.Color(0, 0, 0));
-        btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAgregarMouseClicked(evt);
-            }
-        });
         btnAgregar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel16.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
@@ -294,9 +280,9 @@ public class AltaDocente extends javax.swing.JFrame {
         new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_btnPrestamosMouseClicked
 
-    private void txtIdDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdDocenteActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdDocenteActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnAjustesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAjustesMouseClicked
         this.dispose();
@@ -305,26 +291,8 @@ public class AltaDocente extends javax.swing.JFrame {
 
     private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
         this.dispose();
-        new DocentesI(con).setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_btnRegresarMouseClicked
-
-    private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
-        try{
-            if(txtGrado.getText().equals("") || txtNombre.getText().equals("") ){
-                JOptionPane.showMessageDialog(this, "Faltan datos por llenar");
-            }else{
-                docente.altaDocente(txtNombre.getText(),txtGrado.getText() );
-                JOptionPane.showMessageDialog(this, "Registro guardado :D");
-            }
-        }catch(Exception err){
-            
-        }finally{
-            txtGrado.setText("");
-            txtNombre.setText("");
-            docente.obtenerIdDocente();
-            txtIdDocente.setText(String.valueOf(docente.getUltIdPersonal()));
-        }
-    }//GEN-LAST:event_btnAgregarMouseClicked
 
 
 
@@ -357,8 +325,8 @@ public class AltaDocente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField txtGrado;
-    private javax.swing.JTextField txtIdDocente;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

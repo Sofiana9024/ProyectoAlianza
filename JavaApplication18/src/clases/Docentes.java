@@ -25,9 +25,9 @@ import java.util.Random;
 public class Docentes {
     private final Connection con;
     private ArrayList<ArrayList<Object>> lista = new ArrayList<>();
-    private final ArrayList<Object> IDPERSONAL = new ArrayList();
-    private String idPersonal[];
-    private int ultIdPersonal=0;
+    private final ArrayList<Object> IDEMPLEADO = new ArrayList();
+    private String idEmpleado[];
+    private int ultIdEmpleado=0;
     private Random rand = new Random();
 
     public Docentes(Connection con) {
@@ -37,7 +37,7 @@ public class Docentes {
     public void altaDocente(String nombre, String grado){
         try{
             Statement sts = con.createStatement();
-            sts.addBatch("INSERT INTO personal(nom_pers, grado_pers) VALUES ( '"+ nombre +"','"+grado+"')"); 
+            sts.addBatch("INSERT INTO personal(nom_pers) VALUES ( '"+ nombre +"')"); 
             sts.executeBatch();
         }catch(SQLException e){
             System.out.println("Error " + e);
@@ -55,7 +55,6 @@ public class Docentes {
                 getLista().add(new ArrayList<>());
                 getLista().get(reg).add(rs.getInt("id_pers"));
                 getLista().get(reg).add(rs.getString("nom_pers"));
-                getLista().get(reg).add(rs.getString("grado_pers"));
                 reg++;
             }
             Iterator miIterator = getLista().iterator();
@@ -70,7 +69,7 @@ public class Docentes {
     public void modificaDocente(int idDocente, String nombre, String grado){
         try{
             Statement sts = con.createStatement();
-            sts.executeUpdate("UPDATE personal set nom_pers= '"+nombre+"', grado_pers='"+grado+"' WHERE id_pers="+idDocente);
+            sts.executeUpdate("UPDATE personal set nom_pers= '"+nombre+"' WHERE id_pers="+idDocente);
         }catch(SQLException ex){
             System.out.println(ex.getNextException());
         }
@@ -81,7 +80,6 @@ public class Docentes {
         Object datos[] = new Object[3];
         modelo.addColumn("Id Docente");
         modelo.addColumn("Nombre");
-        modelo.addColumn("Grado");
         
         consultaDocente();
         for (int j = 0; j < getLista().size(); j++) {
@@ -92,25 +90,6 @@ public class Docentes {
         }
         return modelo;
     }
-    
-    public void obtenerIdDocente(){
-        try{
-            int cont = 0;
-            Statement sts = con.createStatement();
-            sts.execute("SELECT * FROM personal");
-            ResultSet rs = sts.getResultSet();
-            while(rs.next()){
-                IDPERSONAL.add(rs.getInt("id_pers"));
-                cont++;
-            }
-            idPersonal = new String[cont];
-            for(int i = 0; i<cont;i++ ){
-                idPersonal[i]=IDPERSONAL.get(i).toString();
-            }
-        }catch(SQLException ex){
-            System.out.println(ex.getNextException());
-        }
-    }
 
     public ArrayList<ArrayList<Object>> getLista() {
         return lista;
@@ -120,22 +99,21 @@ public class Docentes {
         this.lista = lista;
     }
 
-    public String[] getIdPersonal() {
-        return idPersonal;
+    public String[] getIdEmpleado() {
+        return idEmpleado;
     }
 
-    public void setIdPersonal(String[] idPersonal) {
-        this.idPersonal = idPersonal;
+    public void setIdEmpleado(String[] idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
-    public int getUltIdPersonal() {
-        return ultIdPersonal;
+    public int getUltIdEmpleado() {
+        return ultIdEmpleado;
     }
 
-    public void setUltIdPersonal(int ultIdPersonal) {
-        this.ultIdPersonal = ultIdPersonal;
+    public void setUltIdEmpleado(int ultIdEmpleado) {
+        this.ultIdEmpleado = ultIdEmpleado;
     }
-
 
     public Random getRand() {
         return rand;

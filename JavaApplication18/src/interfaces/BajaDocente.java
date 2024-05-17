@@ -285,7 +285,7 @@ public class BajaDocente extends javax.swing.JFrame {
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
         this.dispose();
-        new DocentesI(con).setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
 
 

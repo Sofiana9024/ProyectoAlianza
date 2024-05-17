@@ -3,6 +3,7 @@ package interfaces;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
 
 /**
  *
@@ -19,6 +20,68 @@ public class StockActual extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Stock Actual");
         this.setResizable(false);
+        
+        mostrarMateriales();
+        mostrarCantidadTotal();
+        mostrarCantidadDisponible();
+    }
+    
+    private void mostrarMateriales() {
+        try {
+            String query = "SELECT nom_mat FROM material";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            StringBuilder materiales = new StringBuilder();
+            while (rs.next()) {
+                materiales.append(rs.getString("nom_mat")).append("\n");
+            }
+            
+            profe1.setText(materiales.toString());
+        } catch (SQLException e) {
+            System.out.println("Error al obtener los materiales: " + e.getMessage());
+        }
+    }
+    
+    private void mostrarCantidadTotal() {
+        try {
+            String query = "SELECT SUM(stock_mat) AS total FROM material";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                int total = rs.getInt("total");
+                salon1.setText(Integer.toString(total));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la cantidad total: " + e.getMessage());
+        }
+    }
+    
+    private void mostrarCantidadDisponible() {
+        try {
+            String query = "SELECT SUM(stock_mat) AS total_stock FROM material";
+            String queryPrestamo = "SELECT SUM(cant_pres) AS total_prestado FROM prestamo";
+
+            PreparedStatement pstStock = con.prepareStatement(query);
+            ResultSet rsStock = pstStock.executeQuery();
+            int totalStock = 0;
+            if (rsStock.next()) {
+                totalStock = rsStock.getInt("total_stock");
+            }
+
+            PreparedStatement pstPrestamo = con.prepareStatement(queryPrestamo);
+            ResultSet rsPrestamo = pstPrestamo.executeQuery();
+            int totalPrestado = 0;
+            if (rsPrestamo.next()) {
+                totalPrestado = rsPrestamo.getInt("total_prestado");
+            }
+
+            int disponible = totalStock - totalPrestado;
+            salon.setText(Integer.toString(disponible));
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la cantidad disponible: " + e.getMessage());
+        }
     }
 
     /**
@@ -237,7 +300,7 @@ public class StockActual extends javax.swing.JFrame {
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         this.dispose();
-        new DocentesI(con).setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked

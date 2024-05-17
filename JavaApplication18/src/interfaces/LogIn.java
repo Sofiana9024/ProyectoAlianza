@@ -1,6 +1,8 @@
 package interfaces;
 import java.sql.Connection;
+import java.sql.*;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -81,6 +83,11 @@ public class LogIn extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(255, 195, 0));
         jTextField1.setFont(new java.awt.Font("Quicksand Light", 0, 18)); // NOI18N
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 214, 10)));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Quicksand Book", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 31, 54));
@@ -180,12 +187,35 @@ public class LogIn extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarMouseClicked
 
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked
-        this.dispose();
-        new PaginaPrincipal(con).setVisible(true);
-       // PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        //ventana.setVisible(true);
+        String usuario = jTextField1.getText().trim();
+        String contraseña = new String(passwordField.getPassword()).trim();
+        
+        if (autenticarUsuario(usuario, contraseña)) {
+            this.dispose();
+            new PaginaPrincipal(con).setVisible(true);
+        } else {
+            mostrarMensajeError("Usuario o contraseña incorrectos.");
+        }
     }//GEN-LAST:event_btnAceptarMouseClicked
-
+    
+    private boolean autenticarUsuario(String usuario, String contraseña) {
+        String sql = "SELECT * FROM admin WHERE usuario = ? AND password = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, usuario);
+            pstmt.setString(2, contraseña);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // Si hay al menos una fila en el resultado, la autenticación es exitosa.
+        } catch (SQLException e) {
+            mostrarMensajeError("Error al autenticar usuario: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    private void mostrarMensajeError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordFieldActionPerformed
@@ -205,6 +235,10 @@ public class LogIn extends javax.swing.JFrame {
             showHideButton.setIcon(new ImageIcon(getClass().getResource("/imagenes/ojo.png")));
         }
     }//GEN-LAST:event_showHideButtonMouseClicked
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

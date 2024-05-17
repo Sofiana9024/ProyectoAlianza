@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
@@ -35,15 +36,17 @@ public class Materiales {
         this.con = con;
     }
     
-    public void altaMaterial(String nombre, String tipo, int stock){
-        try{
-            Statement sts = con.createStatement();
-            sts.addBatch("INSERT INTO material(nom_mat, tipo_mat, stock_mat) VALUES ( '"+ nombre +"','"+tipo+"',"+stock+")"); 
-            sts.executeBatch();
-        }catch(SQLException e){
+    public void altaMaterial(String nombre, int stock) {
+        String sql = "INSERT INTO material (nom_mat, stock_mat) VALUES (?, ?)";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, nombre);
+            pstmt.setInt(2, stock);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
             System.out.println("Error " + e);
         }
     }
+
     
     public final void consultaMaterial(){
         int reg = 0;
@@ -56,7 +59,6 @@ public class Materiales {
                 getLista().add(new ArrayList<>());
                 getLista().get(reg).add(rs.getInt("id_mat"));
                 getLista().get(reg).add(rs.getString("nom_mat"));
-                getLista().get(reg).add(rs.getString("tipo_mat"));
                 getLista().get(reg).add(rs.getString("stock_mat"));         //VER SI NO HAY PROBLEMA CON EL TIPO DE DATO
                 reg++;
             }
@@ -69,10 +71,10 @@ public class Materiales {
         }
     }
     
-    public void modificaMaterial(int idMaterial, String nombre, String tipo, int stock){
+    public void modificaMaterial(int idMaterial, String nombre, int stock){
         try{
             Statement sts = con.createStatement();
-            sts.executeUpdate("UPDATE material set nom_mat= '"+nombre+"', tipo_mat='"+tipo+"' , stock_mat="+stock+" WHERE id_mat="+idMaterial);
+            sts.executeUpdate("UPDATE material set nom_mat= '"+nombre+"', stock_mat="+stock+" WHERE id_mat="+idMaterial);
         }catch(SQLException ex){
             System.out.println(ex.getNextException());
         }
@@ -83,7 +85,6 @@ public class Materiales {
         Object datos[] = new Object[4];
         modelo.addColumn("Id Material");
         modelo.addColumn("Nombre");
-        modelo.addColumn("Tipo");
         modelo.addColumn("Stock");
         
         consultaMaterial();

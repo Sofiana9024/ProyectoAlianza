@@ -16,7 +16,7 @@ public class Prestamos extends javax.swing.JFrame {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);
-        this.setTitle("Préstamos");
+        this.setTitle("Alta Docente");
         this.setResizable(false);
     }
 
@@ -261,7 +261,7 @@ public class Prestamos extends javax.swing.JFrame {
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         this.dispose();
-        new DocentesI(con).setVisible(true);
+        new Docentes(con).setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
