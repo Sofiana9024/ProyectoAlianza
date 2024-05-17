@@ -270,8 +270,7 @@ public class StockActual extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        this.dispose();
-        new PaginaPrincipal(con).setVisible(true);
+        
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
@@ -299,7 +298,7 @@ public class StockActual extends javax.swing.JFrame {
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
         this.dispose();
-        new Material(con).setVisible(true);
+        new PaginaPrincipal(con).setVisible(true);
     }//GEN-LAST:event_jLabel19MouseClicked
 
 

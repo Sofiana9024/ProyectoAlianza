@@ -1,8 +1,12 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,8 +22,70 @@ public class NuevoPrestamo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Nuevo Préstamo");
         this.setResizable(false);
+        
+        cargarProfesores();
+        cargarMateriales();
+        cargarCantidades();
+        jComboBox2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cargarCantidades();
+            }
+        });
     }
+    
+    private void cargarProfesores() {
+        try {
+            String query = "SELECT nom_pers FROM personal";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                jComboBox1.addItem(rs.getString("nom_pers"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void cargarMateriales() {
+        try {
+            String query = "SELECT nom_mat FROM material";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                jComboBox2.addItem(rs.getString("nom_mat"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void cargarCantidades() {
+        // Limpiar el JComboBox3
+        jComboBox3.removeAllItems();
 
+        // Obtener el nombre del material seleccionado en el JComboBox2
+        String nombreMaterialSeleccionado = (String) jComboBox2.getSelectedItem();
+        // Extraer el nombre del material de la cadena seleccionada
+        String nombreMaterial = nombreMaterialSeleccionado.split("\\(")[0].trim();
+
+        try {
+            // Consultar la cantidad disponible del material seleccionado en la base de datos
+            String query = "SELECT stock_mat FROM material WHERE nom_mat = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, nombreMaterial);
+            ResultSet rs = pst.executeQuery();
+
+            // Si se encuentra el material en la base de datos, cargar las cantidades disponibles en el JComboBox3
+            if (rs.next()) {
+                int stock = rs.getInt("stock_mat");
+                for (int i = 1; i <= stock; i++) {
+                    jComboBox3.addItem(String.valueOf(i));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,27 +244,42 @@ public class NuevoPrestamo extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Salón");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, -1, -1));
+        jLabel3.setText("Cantidad");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 140, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Material");
-        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 140, -1, -1));
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 140, -1, -1));
 
         jComboBox1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar un profesor--" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 310, 60));
 
         jComboBox2.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar un material--" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 310, 60));
 
         jComboBox3.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar la cantidad--" }));
         jPanel4.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 180, 310, 60));
 
         jPanel12.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel12MouseClicked(evt);
+            }
+        });
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel18.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
@@ -256,6 +337,74 @@ public class NuevoPrestamo extends javax.swing.JFrame {
         new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_jLabel23MouseClicked
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
+        // Obtener los valores seleccionados de los JComboBox
+        String nombreProfesor = (String) jComboBox1.getSelectedItem();
+        String nombreMaterial = (String) jComboBox2.getSelectedItem();
+        int cantidad = Integer.parseInt((String) jComboBox3.getSelectedItem());
+        
+        // Realizar las consultas e inserciones en la base de datos
+        try {
+            // Obtener el id_pers del profesor seleccionado
+            String queryIdPers = "SELECT id_pers FROM personal WHERE nom_pers = ?";
+            PreparedStatement psIdPers = con.prepareStatement(queryIdPers);
+            psIdPers.setString(1, nombreProfesor);
+            ResultSet rsIdPers = psIdPers.executeQuery();
+            rsIdPers.next();
+            int idPers = rsIdPers.getInt("id_pers");
+            
+            // Obtener el id_mat del material seleccionado
+            String queryIdMat = "SELECT id_mat FROM material WHERE nom_mat = ?";
+            PreparedStatement psIdMat = con.prepareStatement(queryIdMat);
+            psIdMat.setString(1, nombreMaterial);
+            ResultSet rsIdMat = psIdMat.executeQuery();
+            rsIdMat.next();
+            int idMat = rsIdMat.getInt("id_mat");
+            
+            // Generar un nuevo id para el préstamo
+            String queryMaxIdPrestamo = "SELECT MAX(id_prestamo) AS max_id FROM prestamo";
+            Statement stmtMaxIdPrestamo = con.createStatement();
+            ResultSet rsMaxIdPrestamo = stmtMaxIdPrestamo.executeQuery(queryMaxIdPrestamo);
+            int nuevoIdPrestamo = 1;
+            if (rsMaxIdPrestamo.next()) {
+                nuevoIdPrestamo = rsMaxIdPrestamo.getInt("max_id") + 1;
+            }
+            
+            // Obtener la fecha actual
+            java.sql.Date fechaActual = new java.sql.Date(System.currentTimeMillis());
+            
+            // Insertar el nuevo préstamo en la tabla prestamo
+            String queryInsertPrestamo = "INSERT INTO prestamo (id_prestamo, id_pers, id_mat, cant_pres, fecha) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement psInsertPrestamo = con.prepareStatement(queryInsertPrestamo);
+            psInsertPrestamo.setInt(1, nuevoIdPrestamo);
+            psInsertPrestamo.setInt(2, idPers);
+            psInsertPrestamo.setInt(3, idMat);
+            psInsertPrestamo.setInt(4, cantidad);
+            psInsertPrestamo.setDate(5, fechaActual);
+            psInsertPrestamo.executeUpdate();
+            
+            // Mostrar un mensaje de éxito
+            JOptionPane.showMessageDialog(this, "Préstamo registrado exitosamente");
+            
+            // Limpiar los JComboBox después de registrar el préstamo
+            jComboBox1.setSelectedIndex(0);
+            jComboBox2.setSelectedIndex(0);
+            jComboBox3.setSelectedIndex(0);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al registrar el préstamo");
+        }
+    }//GEN-LAST:event_jPanel12MouseClicked
+    
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,6 +3,7 @@ package interfaces;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
 
 /**
  *
@@ -18,8 +19,59 @@ public class Prestamos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Préstamos");
         this.setResizable(false);
+        
+        profesores();
+        cantidad();
+        materiales();
     }
-
+    
+    private void profesores(){
+        String query3 = "SELECT nom_pers FROM personal";
+        try {
+            PreparedStatement ps3 = con.prepareStatement(query3);
+            ResultSet rs3 = ps3.executeQuery();
+            StringBuilder sb3 = new StringBuilder();
+            while (rs3.next()) {
+                String nombreProfesor = rs3.getString("nom_pers");
+                sb3.append(nombreProfesor).append("\n");
+            }
+            profe1.setText(sb3.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void cantidad(){
+        String query = "SELECT nom_mat, COUNT(*) AS cantidad FROM prestamo INNER JOIN material ON prestamo.id_mat = material.id_mat GROUP BY prestamo.id_mat";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            StringBuilder sb = new StringBuilder();
+            while (rs.next()) {
+                String nombreMaterial = rs.getString("nom_mat");
+                int cantidad = rs.getInt("cantidad");
+                sb.append(nombreMaterial).append(": ").append(cantidad).append("\n");
+            }
+            salon1.setText(sb.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void materiales(){
+        String query2 = "SELECT personal.nom_pers, material.nom_mat FROM prestamo INNER JOIN personal ON prestamo.id_pers = personal.id_pers INNER JOIN material ON prestamo.id_mat = material.id_mat";
+        try {
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ResultSet rs2 = ps2.executeQuery();
+            StringBuilder sb2 = new StringBuilder();
+            while (rs2.next()) {
+                String nombreProfesor = rs2.getString("nom_pers");
+                String nombreMaterial = rs2.getString("nom_mat");
+                sb2.append(nombreProfesor).append(": ").append(nombreMaterial).append("\n");
+            }
+            salon.setText(sb2.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,8 +254,8 @@ public class Prestamos extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Salón");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 110, -1, -1));
+        jLabel3.setText("Cantidad");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
