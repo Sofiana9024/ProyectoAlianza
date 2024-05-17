@@ -1,7 +1,8 @@
 package interfaces;
 import java.sql.Connection;
 import javax.swing.ImageIcon;
-
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -180,12 +181,35 @@ public class LogIn extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarMouseClicked
 
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked
-        this.dispose();
-        new PaginaPrincipal(con).setVisible(true);
-       // PaginaPrincipal ventana = new PaginaPrincipal(); // Crea una instancia de Ventana2
-        //ventana.setVisible(true);
+        String usuario = jTextField1.getText().trim();
+        String contraseña = new String(passwordField.getPassword()).trim();
+        
+        if (autenticarUsuario(usuario, contraseña)) {
+            this.dispose();
+            new PaginaPrincipal(con).setVisible(true);
+        } else {
+            mostrarMensajeError("Usuario o contraseña incorrectos.");
+        }
     }//GEN-LAST:event_btnAceptarMouseClicked
+    
+    private boolean autenticarUsuario(String usuario, String contraseña) {
+        String sql = "SELECT * FROM admin WHERE usuario = ? AND password = ?";
+        
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, usuario);
+            pstmt.setString(2, contraseña);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // Si hay al menos una fila en el resultado, la autenticación es exitosa.
+        } catch (SQLException e) {
+            mostrarMensajeError("Error al autenticar usuario: " + e.getMessage());
+            return false;
+        }
+    }
 
+    private void mostrarMensajeError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordFieldActionPerformed
