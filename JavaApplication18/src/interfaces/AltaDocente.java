@@ -22,8 +22,6 @@ public class AltaDocente extends javax.swing.JFrame {
         docente = new Docentes(this.con);
         initComponents();
         docente.obtenerIdDocente();
-        txtIdDocente.setEditable(false);
-        txtIdDocente.setText(String.valueOf(docente.getUltIdPersonal()));
         setLocationRelativeTo(null);
         this.setTitle("Alta Docente");
         this.setResizable(false);
@@ -59,10 +57,6 @@ public class AltaDocente extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         txtGrado = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtIdDocente = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -200,29 +194,7 @@ public class AltaDocente extends javax.swing.JFrame {
         txtGrado.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
         jPanel6.add(txtGrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
 
-        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 320, 900, 90));
-
-        jPanel8.setBackground(new java.awt.Color(1, 75, 142));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel8.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 120, 560, 90));
-
-        jLabel1.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Id");
-        jPanel8.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, 50));
-
-        txtIdDocente.setEditable(false);
-        txtIdDocente.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        txtIdDocente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdDocenteActionPerformed(evt);
-            }
-        });
-        jPanel8.add(txtIdDocente, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
-
-        jPanel4.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 900, 90));
+        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 900, 90));
 
         jPanel10.setBackground(new java.awt.Color(1, 75, 142));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -238,7 +210,7 @@ public class AltaDocente extends javax.swing.JFrame {
         txtNombre.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
         jPanel10.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 430, 50));
 
-        jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 900, 90));
+        jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 900, 90));
 
         btnAgregar.setBackground(new java.awt.Color(0, 0, 0));
         btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -294,10 +266,6 @@ public class AltaDocente extends javax.swing.JFrame {
         new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_btnPrestamosMouseClicked
 
-    private void txtIdDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdDocenteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdDocenteActionPerformed
-
     private void btnAjustesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAjustesMouseClicked
         this.dispose();
         new Ajustes(con).setVisible(true);
@@ -309,20 +277,22 @@ public class AltaDocente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarMouseClicked
 
     private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
-        try{
-            if(txtGrado.getText().equals("") || txtNombre.getText().equals("") ){
-                JOptionPane.showMessageDialog(this, "Faltan datos por llenar");
-            }else{
-                docente.altaDocente(txtNombre.getText(),txtGrado.getText() );
-                JOptionPane.showMessageDialog(this, "Registro guardado :D");
-            }
-        }catch(Exception err){
+        try {
+        if (txtGrado.getText().equals("") || txtNombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Faltan datos por llenar");
+        } else {
+            String nombre = txtNombre.getText();
+            String grado = txtGrado.getText();
             
-        }finally{
+            docente.altaDocente(nombre, grado);
+            JOptionPane.showMessageDialog(this, "Registro guardado :D");
+        }
+        } catch (Exception err) {
+            err.printStackTrace();
+        } finally {
             txtGrado.setText("");
             txtNombre.setText("");
             docente.obtenerIdDocente();
-            txtIdDocente.setText(String.valueOf(docente.getUltIdPersonal()));
         }
     }//GEN-LAST:event_btnAgregarMouseClicked
 
@@ -337,7 +307,6 @@ public class AltaDocente extends javax.swing.JFrame {
     private javax.swing.JLabel btnPagPrincipal;
     private javax.swing.JLabel btnPrestamos;
     private javax.swing.JLabel btnRegresar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -355,10 +324,7 @@ public class AltaDocente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField txtGrado;
-    private javax.swing.JTextField txtIdDocente;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,13 @@
 package interfaces;
 
+import clases.Docentes;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
+import clases.Docentes;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -11,12 +16,15 @@ import javax.swing.JFrame;
 public class BajaDocente extends javax.swing.JFrame {
 
     private final Connection con;
+
     public BajaDocente(Connection con) {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);
         this.setTitle("Baja Docente");
         this.setResizable(false);
+        
+        cargarNombresDocentes();
     }
 
     /**
@@ -57,9 +65,6 @@ public class BajaDocente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -186,7 +191,12 @@ public class BajaDocente extends javax.swing.JFrame {
         jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 50));
 
         jComboBox1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un docente--" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 290, 40));
 
         jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 500, 90));
@@ -199,26 +209,36 @@ public class BajaDocente extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Nombre ");
-        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, -1, 50));
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, -1, 50));
 
         jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
+        jTextArea2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea2.setRows(2);
+        jTextArea2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(jTextArea2);
+        jTextArea2.getAccessibleContext().setAccessibleName("");
+        jTextArea2.getAccessibleContext().setAccessibleDescription("");
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 350, -1));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 350, 70));
 
         jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
+        jTextArea1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea1.setRows(2);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 310, 350, -1));
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, 350, 70));
 
         jLabel6.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Grado");
-        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, -1, 50));
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 240, -1, 50));
 
         jPanel12.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel12MouseClicked(evt);
+            }
+        });
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel17.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
@@ -226,18 +246,7 @@ public class BajaDocente extends javax.swing.JFrame {
         jLabel17.setText("Eliminar");
         jPanel12.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 50));
 
-        jPanel4.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 420, 220, 50));
-
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane3.setViewportView(jTextArea3);
-
-        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 310, 350, -1));
-
-        jLabel18.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("Salón");
-        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 260, -1, 50));
+        jPanel4.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 400, 220, 50));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 1200, 510));
 
@@ -288,6 +297,16 @@ public class BajaDocente extends javax.swing.JFrame {
         new DocentesI(con).setVisible(true);
     }//GEN-LAST:event_jLabel20MouseClicked
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        String nombreSeleccionado = jComboBox1.getSelectedItem().toString();
+        mostrarInformacionDocente(nombreSeleccionado);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
+        String nombreSeleccionado = jComboBox1.getSelectedItem().toString();
+        eliminarInformacionDocente(nombreSeleccionado);
+    }//GEN-LAST:event_jPanel12MouseClicked
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -300,7 +319,6 @@ public class BajaDocente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
@@ -319,9 +337,59 @@ public class BajaDocente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarNombresDocentes() {
+        try {
+            String query = "SELECT nom_pers FROM personal";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            while (rs.next()) {
+                model.addElement(rs.getString("nom_pers"));
+            }
+            jComboBox1.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void mostrarInformacionDocente(String nombreDocente) {
+        try {
+            String query = "SELECT nom_pers, grado_pers FROM personal WHERE nom_pers = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, nombreDocente);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                jTextArea2.setText(rs.getString("nom_pers"));
+                jTextArea1.setText(rs.getString("grado_pers"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void eliminarInformacionDocente(String nombreSeleccionado) {
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar la información del docente seleccionado?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                String sql = "DELETE FROM personal WHERE nom_pers = ?";
+                PreparedStatement statement = con.prepareStatement(sql);
+                statement.setString(1, nombreSeleccionado);
+                int filasAfectadas = statement.executeUpdate();
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(this, "Se eliminó correctamente la información del docente.", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+                    // Aquí puedes añadir cualquier otra acción que desees realizar después de la eliminación exitosa
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró al docente en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al eliminar la información del docente.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Operación cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 }

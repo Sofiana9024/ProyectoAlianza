@@ -1,8 +1,12 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -11,15 +15,53 @@ import javax.swing.JFrame;
 public class DocentesI extends javax.swing.JFrame {
 
     private final Connection con;
-    
+    private AdjustmentListener syncScrollListener;
+
     public DocentesI(Connection con) {
         this.con = con;
         initComponents();
         setLocationRelativeTo(null);
         this.setTitle("Docentes");
         this.setResizable(false);
+        
+        profesores();
+        syncScrollBars();
     }
+    private void profesores() {
+        String query3 = "SELECT nom_pers, grado_pers FROM personal";
+        try {
+            PreparedStatement ps3 = con.prepareStatement(query3);
+            ResultSet rs3 = ps3.executeQuery();
+            StringBuilder sb3Profe = new StringBuilder();
+            StringBuilder sb3Salon = new StringBuilder();
+            while (rs3.next()) {
+                String nombreProfesor = rs3.getString("nom_pers");
+                String gradoProfesor = rs3.getString("grado_pers");
+                sb3Profe.append(nombreProfesor).append("\n");
+                sb3Salon.append(gradoProfesor).append("\n");
+            }
+            profe1.setText(sb3Profe.toString());
+            salon1.setText(sb3Salon.toString());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void syncScrollBars() {
+        JScrollBar scrollBar2 = jScrollPane2.getVerticalScrollBar();
+        JScrollBar scrollBar3 = jScrollPane3.getVerticalScrollBar();
 
+        syncScrollListener = new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                int value = ((JScrollBar) e.getSource()).getValue();
+                scrollBar2.setValue(value);
+                scrollBar3.setValue(value);
+            }
+        };
+
+        scrollBar2.addAdjustmentListener(syncScrollListener);
+        scrollBar3.addAdjustmentListener(syncScrollListener);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,9 +91,6 @@ public class DocentesI extends javax.swing.JFrame {
         profe1 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         salon1 = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        salon = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
@@ -181,7 +220,7 @@ public class DocentesI extends javax.swing.JFrame {
         profe1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(profe1);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 340, 240));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 340, 240));
 
         salon1.setEditable(false);
         salon1.setBackground(new java.awt.Color(255, 255, 255));
@@ -190,31 +229,17 @@ public class DocentesI extends javax.swing.JFrame {
         salon1.setRows(5);
         jScrollPane3.setViewportView(salon1);
 
-        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 150, 340, 240));
-
-        salon.setEditable(false);
-        salon.setBackground(new java.awt.Color(255, 255, 255));
-        salon.setColumns(20);
-        salon.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        salon.setRows(5);
-        jScrollPane1.setViewportView(salon);
-
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 150, 340, 240));
-
-        jLabel1.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Salón");
-        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 110, -1, -1));
+        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 150, 340, 240));
 
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nombre");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Grado a cargo");
-        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, -1, -1));
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, -1, -1));
 
         jPanel12.setBackground(new java.awt.Color(1, 75, 142));
         jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -274,7 +299,7 @@ public class DocentesI extends javax.swing.JFrame {
         jLabel17.setText("Agregar");
         jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
 
-        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 430, 130, 40));
+        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 430, 130, 40));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 1200, 530));
 
@@ -333,7 +358,6 @@ public class DocentesI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -362,11 +386,9 @@ public class DocentesI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea profe1;
-    private javax.swing.JTextArea salon;
     private javax.swing.JTextArea salon1;
     // End of variables declaration//GEN-END:variables
 }
