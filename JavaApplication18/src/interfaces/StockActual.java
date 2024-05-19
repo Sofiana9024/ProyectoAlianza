@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -28,18 +30,18 @@ public class StockActual extends javax.swing.JFrame {
     
     private void mostrarCantidadTotal() {
         try {
-        String query = "SELECT nom_mat, SUM(stock_mat) AS total FROM material GROUP BY nom_mat";
-        PreparedStatement pst = con.prepareStatement(query);
-        ResultSet rs = pst.executeQuery();
-        
-        StringBuilder materiales = new StringBuilder();
-        while (rs.next()) {
-            String nombreMaterial = rs.getString("nom_mat");
-            int cantidadTotal = rs.getInt("total");
-            materiales.append(nombreMaterial).append(": ").append(cantidadTotal).append("\n");
-        }
-        
-        salon1.setText(materiales.toString());
+            String query = "SELECT nom_mat, stock_mat FROM material";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
+            StringBuilder materiales = new StringBuilder();
+            while (rs.next()) {
+                String nombreMaterial = rs.getString("nom_mat");
+                int cantidadTotal = rs.getInt("stock_mat");
+                materiales.append(nombreMaterial).append(": ").append(cantidadTotal).append("\n");
+            }
+
+            salon1.setText(materiales.toString());
         } catch (SQLException e) {
             System.out.println("Error al obtener los materiales y su cantidad total: " + e.getMessage());
         }
@@ -47,33 +49,42 @@ public class StockActual extends javax.swing.JFrame {
     
     private void mostrarCantidadDisponible() {
         try {
-        String queryMaterial = "SELECT nom_mat, SUM(stock_mat) AS total_stock FROM material GROUP BY nom_mat";
-        String queryPrestamo = "SELECT id_mat, SUM(cant_pres) AS total_prestado FROM prestamo GROUP BY id_mat";
-        
-        PreparedStatement pstMaterial = con.prepareStatement(queryMaterial);
-        ResultSet rsMaterial = pstMaterial.executeQuery();
-        
-        StringBuilder disponibilidadPorMaterial = new StringBuilder();
-        while (rsMaterial.next()) {
-            String nombreMaterial = rsMaterial.getString("nom_mat");
-            int totalStock = rsMaterial.getInt("total_stock");
-            
+            String queryStock = "SELECT material.nom_mat, material.stock_mat AS total_stock FROM material GROUP BY material.nom_mat";
+            String queryPrestamo = "SELECT material.nom_mat, SUM(prestamo.cant_pres) AS total_prestado FROM material LEFT JOIN prestamo ON material.id_mat = prestamo.id_mat GROUP BY material.nom_mat";
+
+            PreparedStatement pstStock = con.prepareStatement(queryStock);
+            ResultSet rsStock = pstStock.executeQuery();
             PreparedStatement pstPrestamo = con.prepareStatement(queryPrestamo);
             ResultSet rsPrestamo = pstPrestamo.executeQuery();
-            
-            int totalPrestado = 0;
-            while (rsPrestamo.next()) {
-                if (rsPrestamo.getString("id_mat").equals(nombreMaterial)) {
-                    totalPrestado = rsPrestamo.getInt("total_prestado");
-                    break;
-                }
+
+            Map<String, Integer> stockMap = new HashMap<>();
+            Map<String, Integer> prestamoMap = new HashMap<>();
+
+            // Guardar el total de stock por material en un mapa
+            while (rsStock.next()) {
+                String nombreMaterial = rsStock.getString("nom_mat");
+                int totalStock = rsStock.getInt("total_stock");
+                stockMap.put(nombreMaterial, totalStock);
             }
-            
-            int disponible = totalStock - totalPrestado;
-            disponibilidadPorMaterial.append(nombreMaterial).append(": ").append(disponible).append("\n");
-        }
-        
-        salon.setText(disponibilidadPorMaterial.toString());
+
+            // Guardar el total prestado por material en un mapa
+            while (rsPrestamo.next()) {
+                String nombreMaterial = rsPrestamo.getString("nom_mat");
+                int totalPrestado = rsPrestamo.getInt("total_prestado");
+                prestamoMap.put(nombreMaterial, totalPrestado);
+            }
+
+            // Calcular la cantidad disponible para cada material
+            StringBuilder disponibilidadPorMaterial = new StringBuilder();
+            for (Map.Entry<String, Integer> entry : stockMap.entrySet()) {
+                String nombreMaterial = entry.getKey();
+                int totalStock = entry.getValue();
+                int totalPrestado = prestamoMap.getOrDefault(nombreMaterial, 0);
+                int disponible = totalStock - totalPrestado;
+                disponibilidadPorMaterial.append(nombreMaterial).append(": ").append(disponible).append("\n");
+            }
+
+            salon.setText(disponibilidadPorMaterial.toString());
         } catch (SQLException e) {
             System.out.println("Error al obtener la cantidad disponible por material: " + e.getMessage());
         }

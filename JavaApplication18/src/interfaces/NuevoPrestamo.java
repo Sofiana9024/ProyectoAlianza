@@ -70,15 +70,23 @@ public class NuevoPrestamo extends javax.swing.JFrame {
 
         try {
             // Consultar la cantidad disponible del material seleccionado en la base de datos
-            String query = "SELECT stock_mat FROM material WHERE nom_mat = ?";
+            String query = "SELECT material.stock_mat, COALESCE(SUM(prestamo.cant_pres), 0) AS total_prestado " +
+                            "FROM material " +
+                            "LEFT JOIN prestamo ON material.id_mat = prestamo.id_mat " +
+                            "WHERE material.nom_mat = ? " +
+                            "GROUP BY material.stock_mat";
+
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, nombreMaterial);
             ResultSet rs = pst.executeQuery();
 
-            // Si se encuentra el material en la base de datos, cargar las cantidades disponibles en el JComboBox3
             if (rs.next()) {
                 int stock = rs.getInt("stock_mat");
-                for (int i = 1; i <= stock; i++) {
+                int prestado = rs.getInt("total_prestado");
+                int disponible = stock - prestado;
+
+                // Agregar las cantidades disponibles al JComboBox3
+                for (int i = 1; i <= disponible; i++) {
                     jComboBox3.addItem(String.valueOf(i));
                 }
             }
