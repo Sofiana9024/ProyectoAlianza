@@ -77,20 +77,25 @@ public class Materiales {
         }
     }
     
-    public final DefaultTableModel actualizaTablaMaterial(){
+    public DefaultTableModel actualizaTablaMaterial() {
         DefaultTableModel modelo = new DefaultTableModel();
-        Object datos[] = new Object[4];
-        modelo.addColumn("Id Material");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Stock");
-        
-        consultaMaterial();
-        for (int j = 0; j < getLista().size(); j++) {
-            datos[0] = getLista().get(j).get(0);
-            datos[1] = getLista().get(j).get(1);
-            datos[2] = getLista().get(j).get(2);
-            modelo.addRow(datos);
+        modelo.addColumn("Nombre del Material");
+        modelo.addColumn("Cantidad en Stock");
+
+        String query = "SELECT nom_mat, stock_mat FROM material";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                String nombre = rs.getString("nom_mat");
+                int stock = rs.getInt("stock_mat");
+                modelo.addRow(new Object[]{nombre, stock});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return modelo;
     }
 

@@ -1,8 +1,15 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.*;
+import java.sql.ResultSet;
+import javax.swing.JComboBox;
+
+
 
 /**
  *
@@ -18,6 +25,8 @@ public class BajaMaterial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Baja Material");
         this.setResizable(false);
+        
+        cargarNombresMateriales(jComboBox1);
     }
 
     /**
@@ -185,14 +194,20 @@ public class BajaMaterial extends javax.swing.JFrame {
         jLabel6.setText("Cantidad");
         jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 260, -1, 50));
 
+        jTextArea1.setBackground(new java.awt.Color(0, 53, 102));
         jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
+        jTextArea1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(2);
         jScrollPane1.setViewportView(jTextArea1);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, 350, -1));
 
+        jTextArea2.setBackground(new java.awt.Color(0, 53, 102));
         jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
+        jTextArea2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea2.setRows(2);
         jScrollPane2.setViewportView(jTextArea2);
 
         jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 350, -1));
@@ -211,7 +226,12 @@ public class BajaMaterial extends javax.swing.JFrame {
         jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 50));
 
         jComboBox1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un Material--" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 290, 40));
 
         jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 500, 90));
@@ -274,7 +294,64 @@ public class BajaMaterial extends javax.swing.JFrame {
         new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_jLabel19MouseClicked
 
-  
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        String selectedMaterial = (String) jComboBox1.getSelectedItem();
+        if (selectedMaterial != null && !selectedMaterial.equals("--Selecciona un Material--")) {
+            loadMaterialDetails(selectedMaterial);
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    public void cargarNombresMateriales(JComboBox<String> comboBox) {
+        comboBox.removeAllItems(); // Limpiar items existentes
+        comboBox.addItem("--Selecciona un material--");
+        String query = "SELECT DISTINCT nom_mat FROM material"; // Query para obtener nombres únicos
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                comboBox.addItem(rs.getString("nom_mat")); // Agregar cada nombre al combo box
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al cargar nombres de materiales: " + ex.getMessage());
+        }
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener el índice del elemento seleccionado
+                int selectedIndex = comboBox.getSelectedIndex();
+                // Verificar si se seleccionó "--Selecciona un material--"
+                if (selectedIndex == 0) {
+                    // Limpiar textos de los JTextArea
+                    jTextArea1.setText("");
+                    jTextArea2.setText("");
+                } else {
+                    // Si se seleccionó otro material, cargar su información en los JTextArea
+                    String materialSeleccionado = (String) comboBox.getSelectedItem();
+                    loadMaterialDetails(materialSeleccionado);
+                }
+            }
+        });
+    }
+    
+    private void loadMaterialDetails(String materialName) {
+        try {
+            // Consulta SQL para obtener la cantidad del material
+            String cantidadQuery = "SELECT stock_mat FROM material WHERE nom_mat = ?";
+            PreparedStatement cantidadStatement = con.prepareStatement(cantidadQuery);
+            cantidadStatement.setString(1, materialName);
+            ResultSet cantidadRs = cantidadStatement.executeQuery();
+            if (cantidadRs.next()) {
+                int cantidad = cantidadRs.getInt("stock_mat");
+                jTextArea1.setText(String.valueOf(cantidad)); // Mostrar la cantidad en jTextArea1
+            }
+
+            // Mostrar el nombre del material en jTextArea2
+            jTextArea2.setText(materialName);
+
+        } catch (SQLException e) {
+            // Manejo de excepciones
+            e.printStackTrace();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
