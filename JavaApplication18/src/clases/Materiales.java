@@ -89,7 +89,6 @@ public class Materiales {
             datos[0] = getLista().get(j).get(0);
             datos[1] = getLista().get(j).get(1);
             datos[2] = getLista().get(j).get(2);
-            datos[3] = getLista().get(j).get(3);
             modelo.addRow(datos);
         }
         return modelo;

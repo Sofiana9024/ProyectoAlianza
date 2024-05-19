@@ -245,7 +245,7 @@ public class AltaMaterial extends javax.swing.JFrame {
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         this.dispose();
-        new Material(con).setVisible(true);
+        new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void btnMaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialMouseClicked
@@ -274,7 +274,7 @@ public class AltaMaterial extends javax.swing.JFrame {
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         this.dispose();
-        new Material(con).setVisible(true);
+        new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_jLabel13MouseClicked
 
 

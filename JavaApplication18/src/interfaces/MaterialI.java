@@ -11,12 +11,12 @@ import clases.*;
  *
  * @author monse
  */
-public class Material extends javax.swing.JFrame {
+public class MaterialI extends javax.swing.JFrame {
 
     private final Connection con;
     private final Materiales material;
     
-    public Material(Connection con) {
+    public MaterialI(Connection con) {
         this.con = con;
         material = new Materiales(this.con);
         initComponents();

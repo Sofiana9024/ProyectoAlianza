@@ -221,7 +221,7 @@ public class Ajustes extends javax.swing.JFrame {
 
     private void btnMaterialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMaterialMouseClicked
         this.dispose();
-        new Material(con).setVisible(true);
+        new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_btnMaterialMouseClicked
 
     private void btnConsultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConsultarMouseClicked

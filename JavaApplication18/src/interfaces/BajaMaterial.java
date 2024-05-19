@@ -271,7 +271,7 @@ public class BajaMaterial extends javax.swing.JFrame {
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
         this.dispose();
-        new Material(con).setVisible(true);
+        new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_jLabel19MouseClicked
 
   
