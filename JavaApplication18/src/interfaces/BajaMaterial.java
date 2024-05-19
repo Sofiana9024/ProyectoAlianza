@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import java.sql.*;
 import java.sql.ResultSet;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 
 
@@ -237,6 +238,11 @@ public class BajaMaterial extends javax.swing.JFrame {
         jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 500, 90));
 
         jPanel12.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel12MouseClicked(evt);
+            }
+        });
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel17.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
@@ -301,6 +307,51 @@ public class BajaMaterial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
+        // Obtener el nombre del material seleccionado en jComboBox1
+    String materialSeleccionado = (String) jComboBox1.getSelectedItem();
+    if (materialSeleccionado == null || materialSeleccionado.equals("--Selecciona un Material--")) {
+        return; // No hacer nada si no se ha seleccionado un material
+    }
+    
+    // Mostrar un cuadro de diálogo de confirmación
+    int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas eliminar el material seleccionado?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (confirmacion != JOptionPane.YES_OPTION) {
+        return; // No hacer nada si el usuario cancela la operación
+    }
+    
+    try {
+        // Consulta para eliminar los registros de prestamo asociados al material
+        String deletePrestamoQuery = "DELETE FROM prestamo WHERE id_mat = (SELECT id_mat FROM material WHERE nom_mat = ?)";
+        // Preparar la consulta para eliminar los registros de prestamo asociados al material
+        PreparedStatement pstPrestamo = con.prepareStatement(deletePrestamoQuery);
+        pstPrestamo.setString(1, materialSeleccionado);
+        // Ejecutar la consulta para eliminar los registros de prestamo asociados al material
+        pstPrestamo.executeUpdate();
+        
+        // Consulta para eliminar el material seleccionado de la tabla material
+        String deleteMaterialQuery = "DELETE FROM material WHERE nom_mat = ?";
+        // Preparar la consulta para eliminar el material seleccionado de la tabla material
+        PreparedStatement pstMaterial = con.prepareStatement(deleteMaterialQuery);
+        pstMaterial.setString(1, materialSeleccionado);
+        // Ejecutar la consulta para eliminar el material seleccionado de la tabla material
+        pstMaterial.executeUpdate();
+
+        // Actualizar la interfaz después de la eliminación
+        jComboBox1.removeItem(materialSeleccionado); // Eliminar el material de jComboBox1
+        jTextArea1.setText(""); // Limpiar el texto en jTextArea1
+        jTextArea2.setText(""); // Limpiar el texto en jTextArea2
+
+        // Mostrar un mensaje de éxito
+        JOptionPane.showMessageDialog(this, "El material " + materialSeleccionado + " ha sido eliminado correctamente.");
+
+    } catch (SQLException ex) {
+        // Manejar cualquier excepción SQL que pueda ocurrir
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al eliminar el material: Primero tiene que eliminar los prestamos relacionados al material", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_jPanel12MouseClicked
+    
     public void cargarNombresMateriales(JComboBox<String> comboBox) {
         comboBox.removeAllItems(); // Limpiar items existentes
         comboBox.addItem("--Selecciona un material--");
