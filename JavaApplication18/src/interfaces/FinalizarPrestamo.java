@@ -1,8 +1,14 @@
 package interfaces;
 
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.DefaultComboBoxModel;
+
 
 /**
  *
@@ -18,6 +24,23 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Finalizar Préstamo");
         this.setResizable(false);
+        
+        // Llenar el JComboBox1 con los profesores que tienen materiales prestados
+        llenarComboBox1();
+        jComboBox1.addItemListener(new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                // Llenar el JComboBox2 con los materiales prestados al profesor seleccionado
+                llenarComboBox2();
+
+                // Mostrar el nombre del profesor seleccionado en jTextArea2
+                mostrarDatosSeleccionados();
+                mostrarCantidadPrestada();
+            }
+        }
+    });
+        // Agregar un listener al JComboBox1 para detectar cambios de selección
     }
 
     /**
@@ -46,6 +69,9 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -53,14 +79,14 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         jLabel19 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea4 = new javax.swing.JTextArea();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -174,9 +200,28 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Quicksand Light", 0, 48)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Llena los siguientes campos");
-        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, -1, -1));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 1080, 60));
+
+        jPanel7.setBackground(new java.awt.Color(1, 75, 142));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel18.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setText("Material");
+        jPanel7.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 70));
+
+        jComboBox2.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar Material--" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 290, 40));
+
+        jPanel4.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 500, 90));
 
         jPanel6.setBackground(new java.awt.Color(1, 75, 142));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -187,50 +232,50 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 70));
 
         jComboBox1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Seleccionar Profesor--" }));
         jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 290, 40));
 
-        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 500, 90));
+        jPanel4.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 500, 90));
 
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Información almacenada");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, -1, 50));
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, -1, 50));
 
         jLabel16.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Nombre ");
-        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, -1, 50));
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, -1, 50));
 
+        jTextArea2.setBackground(new java.awt.Color(0, 53, 102));
         jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
+        jTextArea2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea2.setRows(1);
         jScrollPane2.setViewportView(jTextArea2);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 350, -1));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 350, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 320, 350, -1));
-
-        jLabel18.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("Salón");
-        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, -1, 50));
-
+        jTextArea3.setBackground(new java.awt.Color(0, 53, 102));
         jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
+        jTextArea3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea3.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea3.setRows(1);
         jScrollPane3.setViewportView(jTextArea3);
 
-        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 320, 350, -1));
+        jPanel4.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 320, 350, -1));
 
         jLabel19.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Material");
-        jPanel4.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 270, -1, 50));
+        jLabel19.setText("Cantidad");
+        jPanel4.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 270, -1, 50));
 
         jPanel12.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel12MouseClicked(evt);
+            }
+        });
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel17.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
@@ -238,7 +283,21 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         jLabel17.setText("Finalizar");
         jPanel12.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, -1, 50));
 
-        jPanel4.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 430, 180, 50));
+        jPanel4.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 430, 180, 50));
+
+        jTextArea4.setBackground(new java.awt.Color(0, 53, 102));
+        jTextArea4.setColumns(20);
+        jTextArea4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextArea4.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea4.setRows(1);
+        jScrollPane4.setViewportView(jTextArea4);
+
+        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 320, 350, -1));
+
+        jLabel20.setFont(new java.awt.Font("Quicksand Bold", 0, 24)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("Material");
+        jPanel4.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 270, -1, 50));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 1200, 510));
 
@@ -289,10 +348,141 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
         new Prestamos(con).setVisible(true);
     }//GEN-LAST:event_jLabel23MouseClicked
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        mostrarDatosSeleccionados();
+        mostrarCantidadPrestada();
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
+    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
+        String materialSeleccionado = (String) jComboBox2.getSelectedItem();
+        String profesorSeleccionado = (String) jComboBox1.getSelectedItem();
 
+        if (materialSeleccionado == null || materialSeleccionado.equals("--Seleccionar Material--") ||
+            profesorSeleccionado == null || profesorSeleccionado.equals("--Seleccionar Profesor--")) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un material y un profesor válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // Consulta SQL para eliminar el préstamo correspondiente
+            String query = "DELETE FROM prestamo WHERE id_pers IN (SELECT id_pers FROM personal WHERE nom_pers = ?) AND id_mat IN (SELECT id_mat FROM material WHERE nom_mat = ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, profesorSeleccionado);
+            pst.setString(2, materialSeleccionado);
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "El préstamo ha sido eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró ningún préstamo correspondiente para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el préstamo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jPanel12MouseClicked
+    // Método para llenar el JComboBox1 con los nombres del personal
+private void llenarComboBox1() {
+    try {
+        String query = "SELECT nom_pers FROM personal";
+        PreparedStatement pst = con.prepareStatement(query);
+        ResultSet rs = pst.executeQuery();
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        model.addElement("--Seleccionar Docente--");
+
+        while (rs.next()) {
+            String nombreDocente = rs.getString("nom_pers");
+            model.addElement(nombreDocente);
+        }
+
+        jComboBox1.setModel(model);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+    // Método para llenar el JComboBox2 con los materiales prestados al profesor seleccionado
+    private void llenarComboBox2() {
+        String nombreProfesorSeleccionado = (String) jComboBox1.getSelectedItem();
+    if (nombreProfesorSeleccionado == null || nombreProfesorSeleccionado.equals("--Seleccionar Material--")) {
+        return;
+    }
+
+    try {
+        String query = "SELECT m.nom_mat FROM prestamo pr "
+                     + "JOIN material m ON pr.id_mat = m.id_mat "
+                     + "JOIN personal p ON pr.id_pers = p.id_pers "
+                     + "WHERE p.nom_pers = ?";
+
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, nombreProfesorSeleccionado);
+        ResultSet rs = pst.executeQuery();
+
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) jComboBox2.getModel();
+        model.removeAllElements();
+        model.addElement("--Seleccionar Material--");
+
+        while (rs.next()) {
+            String nombreMaterial = rs.getString("nom_mat");
+            model.addElement(nombreMaterial);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar los materiales prestados: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+    
+    private void mostrarDatosSeleccionados() {
+        String nombreProfesorSeleccionado = (String) jComboBox1.getSelectedItem();
+        String nombreMaterialSeleccionado = (String) jComboBox2.getSelectedItem();
+
+        if (nombreProfesorSeleccionado == null || nombreMaterialSeleccionado == null) {
+            return;
+        }
+
+        jTextArea2.setText(nombreProfesorSeleccionado);
+        jTextArea4.setText(nombreMaterialSeleccionado);
+    }
+    
+    private void mostrarCantidadPrestada() {
+        // Obtener el material seleccionado en el JComboBox2
+        String materialSeleccionado = (String) jComboBox2.getSelectedItem();
+        // Verificar si se seleccionó un material válido
+        if (materialSeleccionado == null || materialSeleccionado.equals("--Seleccionar Material--")) {
+            return; // Salir de la función si no se seleccionó un material válido
+        }
+
+        // Obtener el profesor seleccionado en el JComboBox1
+        String profesorSeleccionado = (String) jComboBox1.getSelectedItem();
+        // Verificar si se seleccionó un profesor válido
+        if (profesorSeleccionado == null || profesorSeleccionado.equals("--Seleccionar Profesor--")) {
+            return; // Salir de la función si no se seleccionó un profesor válido
+        }
+
+        try {
+            // Consulta SQL para obtener la cantidad prestada del material seleccionado para el profesor seleccionado
+            String query = "SELECT pr.cant_pres FROM prestamo pr JOIN material m ON pr.id_mat = m.id_mat JOIN personal p ON pr.id_pers = p.id_pers WHERE p.nom_pers = ? AND m.nom_mat = ?";
+            // Preparar la consulta
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, profesorSeleccionado); // Establecer el nombre del profesor como parámetro
+            pst.setString(2, materialSeleccionado); // Establecer el nombre del material como parámetro
+            // Ejecutar la consulta y obtener los resultados
+            ResultSet rs = pst.executeQuery();
+            // Verificar si se encontraron resultados
+            if (rs.next()) {
+                // Obtener la cantidad prestada del resultado de la consulta
+                int cantidadPrestada = rs.getInt("cant_pres");
+                // Mostrar la cantidad prestada en el JTextArea3
+                jTextArea3.setText(Integer.toString(cantidadPrestada));
+            }
+        } catch (SQLException e) {
+            // Manejar cualquier error de SQL mostrando un mensaje de error
+            JOptionPane.showMessageDialog(this, "Error al obtener la cantidad prestada del material: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -303,6 +493,7 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -318,11 +509,12 @@ public class FinalizarPrestamo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTextArea jTextArea4;
     // End of variables declaration//GEN-END:variables
 }
