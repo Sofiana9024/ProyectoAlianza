@@ -5,19 +5,35 @@ import javax.swing.JFrame;
 import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 import clases.*;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author monse
  */
 public class Consultar extends javax.swing.JFrame {
+    
+    private final Reportess reporte;
 
     private final Connection con;
     public Consultar(Connection con) {
         this.con = con;
+        reporte = new Reportess(this.con);
         initComponents();
+        
+        reporte.obtenerMes();
+        txtMes.setModel(new javax.swing.DefaultComboBoxModel(reporte.getMes()));
+        
+        reporte.obtenerSem();
+        txtSemana.setModel(new javax.swing.DefaultComboBoxModel(reporte.getSem()));
+        
         setLocationRelativeTo(null);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,9 +63,11 @@ public class Consultar extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        txtMes = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        txtSemana = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -177,10 +195,18 @@ public class Consultar extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Mensual");
-        jPanel8.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, -1));
+        jPanel8.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/calendario-diario.png"))); // NOI18N
-        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
+        jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, -1));
+
+        txtMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMesActionPerformed(evt);
+            }
+        });
+        jPanel8.add(txtMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 160, 60));
 
         jPanel4.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 110, 300, 290));
 
@@ -191,10 +217,18 @@ public class Consultar extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Semanal");
-        jPanel9.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
+        jPanel9.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lunes.png"))); // NOI18N
-        jPanel9.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
+        jPanel9.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+
+        txtSemana.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtSemana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSemanaActionPerformed(evt);
+            }
+        });
+        jPanel9.add(txtSemana, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 160, 60));
 
         jPanel4.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 300, 290));
 
@@ -255,6 +289,33 @@ public class Consultar extends javax.swing.JFrame {
         new Ajustes(con).setVisible(true);
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void txtSemanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSemanaActionPerformed
+        String[] componentesFecha = txtSemana.getSelectedItem().toString().split("-");
+        int year = Integer.parseInt(componentesFecha[0]);
+        int mes = Integer.parseInt(componentesFecha[1]);
+        int dia = Integer.parseInt(componentesFecha[2]);
+        try{
+            reporte.xlsSemanal(year, mes, dia);
+        }catch(FileNotFoundException err){
+            System.out.println(err);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtSemanaActionPerformed
+
+    private void txtMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMesActionPerformed
+        String[] componentesFecha = txtMes.getSelectedItem().toString().split("-");
+        int year = Integer.parseInt(componentesFecha[0]);
+        int mes = Integer.parseInt(componentesFecha[1]);
+        try{
+            reporte.xlsMensual(year, mes);
+        }catch(FileNotFoundException err){
+            System.out.println(err);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Consultar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtMesActionPerformed
+
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -280,5 +341,7 @@ public class Consultar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JComboBox<String> txtMes;
+    private javax.swing.JComboBox<String> txtSemana;
     // End of variables declaration//GEN-END:variables
 }

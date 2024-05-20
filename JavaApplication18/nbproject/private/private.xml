@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/MaterialI.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/AltaMaterial.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/StockActual.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/Prestamos.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/clases/Reportess.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/PaginaPrincipal.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/BajaDocente.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/BajaMaterial.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/NuevoPrestamo.java</file>
-            <file>file:/C:/Users/juanf/OneDrive/Documents/GitHub/ProyectoAlianza/JavaApplication18/src/interfaces/FinalizarPrestamo.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/interfaces/main.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/interfaces/Ajustes.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/clases/Docentes.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/interfaces/Prestamos.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/conexion/Conexion.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/clases/Materiales.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/interfaces/LogIn.java</file>
+            <file>file:/C:/Users/sofia/OneDrive%20-%20Universidad%20Politécnica%20de%20San%20Luis%20Potosí/Sem2-6/SEM_6/ingSoftware/Proyecto/JavaApplication18/src/interfaces/Consultar.java</file>
         </group>
     </open-files>
 </project-private>
