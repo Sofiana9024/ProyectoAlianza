@@ -27,9 +27,6 @@ import java.util.ArrayList;
  */
 public class Reportess{
     
-    private Font fontSubrayado = new Font(Font.FontFamily.HELVETICA, 12, Font.UNDERLINE);
-    Font fontAzul = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLUE);
-    Font fontNaranja = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.RED);
     private final Connection con;
     
     private final ArrayList<Object> MES = new ArrayList();
