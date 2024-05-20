@@ -6,8 +6,6 @@
 
 package clases;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Font;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
