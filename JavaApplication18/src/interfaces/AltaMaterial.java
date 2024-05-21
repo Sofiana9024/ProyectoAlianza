@@ -7,6 +7,10 @@ package interfaces;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+
 
 /**
  *
@@ -215,6 +219,11 @@ public class AltaMaterial extends javax.swing.JFrame {
         jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 900, 90));
 
         btnAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAgregarMouseClicked(evt);
+            }
+        });
         btnAgregar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel16.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
@@ -277,6 +286,46 @@ public class AltaMaterial extends javax.swing.JFrame {
         new MaterialI(con).setVisible(true);
     }//GEN-LAST:event_jLabel13MouseClicked
 
+    private void btnAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseClicked
+         String nombre = jTextField1.getText();
+        String cantidadStr = jTextField2.getText();
+
+        if (nombre.isEmpty() || cantidadStr.isEmpty()) {
+            // You can show a message dialog to inform the user
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO material (nom_mat, cant_mat) VALUES (?, ?)";
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setString(1, nombre);
+                stmt.setInt(2, cantidad);
+
+                // Execute the insert statement
+                int rowsInserted = stmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    // You can show a success message
+                    javax.swing.JOptionPane.showMessageDialog(this, "Material agregado exitosamente.", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    // Optionally, clear the input fields
+                    jTextField1.setText("");
+                    jTextField2.setText("");
+                }
+            }
+        } catch (NumberFormatException e) {
+            // Show an error message if the quantity is not a valid number
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido para la cantidad.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            // Handle any SQL exceptions
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al agregar el material.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarMouseClicked
+    
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
