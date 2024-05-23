@@ -4,12 +4,15 @@
  */
 package interfaces;
 
+import clases.IntegerDocumentFilter;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.JFrame;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
+import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 
 
 /**
@@ -26,6 +29,7 @@ public class AltaMaterial extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Alta Material");
         this.setResizable(false);
+        ((AbstractDocument) jTextField2.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
     }
 
     /**
@@ -300,7 +304,7 @@ public class AltaMaterial extends javax.swing.JFrame {
             int cantidad = Integer.parseInt(cantidadStr);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO material (nom_mat, cant_mat) VALUES (?, ?)";
+            String sql = "INSERT INTO material (nom_mat, stock_mat) VALUES (?, ?)";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 stmt.setString(1, nombre);
                 stmt.setInt(2, cantidad);
