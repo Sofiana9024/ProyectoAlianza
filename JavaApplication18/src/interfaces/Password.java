@@ -1,9 +1,14 @@
 package interfaces;
 
+import clases.IntegerDocumentFilter;
 import java.awt.Color;
 import java.sql.Connection;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.text.AbstractDocument;
+
 
 /**
  *
@@ -14,11 +19,14 @@ public class Password extends javax.swing.JFrame {
     private final Connection con;
     
     public Password(Connection con) {
-        this.con = con;
+        this.con = con; // Assign the provided username
         initComponents();
         setLocationRelativeTo(null);
         this.setTitle("Contraseña");
         this.setResizable(false);
+        
+        ((AbstractDocument) contra1.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
+        ((AbstractDocument) contra2.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
     }
 
     /**
@@ -188,7 +196,7 @@ public class Password extends javax.swing.JFrame {
         jPanel8.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 50));
 
         contra1.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        contra1.setText("jPasswordField1");
+        contra1.setToolTipText("contraseña");
         jPanel8.add(contra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, 490, 50));
 
         ojo.setFont(new java.awt.Font("Segoe UI", 0, 1)); // NOI18N
@@ -210,7 +218,7 @@ public class Password extends javax.swing.JFrame {
         jPanel10.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 30));
 
         contra2.setFont(new java.awt.Font("Quicksand Book", 0, 18)); // NOI18N
-        contra2.setText("jPasswordField1");
+        contra2.setToolTipText("contraseña");
         jPanel10.add(contra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, 490, 50));
 
         ojo2.setFont(new java.awt.Font("Segoe UI", 0, 1)); // NOI18N
@@ -279,17 +287,42 @@ public class Password extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-         String buttonText = ojo.getText();
-        // Cambiar el carácter de ocultamiento según el texto del botón
+        String buttonText = ojo.getText();
+        String usuario = PaginaPrincipal.usuario;
+        
         if (buttonText.equals("Mostrar Contraseña")) {
             contra1.setEchoChar((char) 0); // Mostrar la contraseña
             ojo.setText("Ocultar Contraseña");
             ojo.setIcon(new ImageIcon(getClass().getResource("/imagenes/vision-baja.png")));
-
         } else {
             contra1.setEchoChar('*'); // Ocultar la contraseña
             ojo.setText("Mostrar Contraseña");
             ojo.setIcon(new ImageIcon(getClass().getResource("/imagenes/ojo.png")));
+        }
+
+        String password1 = new String(contra1.getPassword());
+        String password2 = new String(contra2.getPassword());
+
+        if (password1.equals(password2)) {
+            String query = "UPDATE admin SET password = ? WHERE usuario = ?";
+            try {
+                PreparedStatement pst = con.prepareStatement(query);
+                pst.setString(1, password1); // Encripta la contraseña si es necesario
+                pst.setString(2, usuario); // Reemplaza 1 con el ID del usuario correspondiente
+
+                int updated = pst.executeUpdate();
+                System.out.println("Filas actualizadas: " + updated); // Verificar cuántas filas se han actualizado realmente
+                if (updated > 0) {
+                    JOptionPane.showMessageDialog(this, "Contraseña actualizada con éxito");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar la contraseña: No se realizaron actualizaciones");
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al actualizar la contraseña: " + e.getMessage() + "\nQuery: " + query + "\nUsuario: " + usuario);
+                e.printStackTrace(); // Mostrar detalles de la excepción en la consola
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
         }
     }//GEN-LAST:event_jPanel12MouseClicked
 

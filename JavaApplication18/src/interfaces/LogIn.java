@@ -186,6 +186,7 @@ public class LogIn extends javax.swing.JFrame {
         
         if (autenticarUsuario(usuario, contraseña)) {
             this.dispose();
+            PaginaPrincipal.setUsuario(usuario);
             new PaginaPrincipal(con).setVisible(true);
         } else {
             mostrarMensajeError("Usuario o contraseña incorrectos.");

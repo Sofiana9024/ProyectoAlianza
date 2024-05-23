@@ -2,7 +2,13 @@ package interfaces;
 
 import java.awt.Color;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import clases.IntegerDocumentFilter;
 
 /**
  *
@@ -19,6 +25,9 @@ public class Usuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("Usuario");
         this.setResizable(false);
+        
+        ((AbstractDocument) jTextField1.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
+        ((AbstractDocument) jTextField2.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
     }
 
     /**
@@ -207,6 +216,11 @@ public class Usuario extends javax.swing.JFrame {
         jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 900, 90));
 
         jPanel12.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel12MouseClicked(evt);
+            }
+        });
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel16.setFont(new java.awt.Font("Quicksand Bold", 0, 36)); // NOI18N
@@ -262,6 +276,35 @@ public class Usuario extends javax.swing.JFrame {
         this.dispose();
         new Ajustes(con).setVisible(true);
     }//GEN-LAST:event_jLabel23MouseClicked
+
+    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
+        String nuevoUsuario = jTextField1.getText().trim();
+        String confirmarUsuario = jTextField2.getText().trim();
+        String usuarioActual = PaginaPrincipal.usuario; // Asegúrate de que PaginaPrincipal.usuario tenga el valor correcto
+
+        // Verificar si los campos de texto son iguales
+        if (!nuevoUsuario.equals(confirmarUsuario)) {
+            JOptionPane.showMessageDialog(this, "Los nombres de usuario no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si los nombres de usuario no coinciden
+        }
+
+        // Realizar la actualización del usuario en la base de datos
+        String query = "UPDATE admin SET usuario = ? WHERE usuario = ?";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setString(1, nuevoUsuario);
+            pst.setString(2, usuarioActual);
+
+            int updated = pst.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(this, "Usuario actualizado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el usuario: No se realizaron actualizaciones", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Registrar la excepción en la consola
+        }
+    }//GEN-LAST:event_jPanel12MouseClicked
 
 
 

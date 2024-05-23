@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 public class PaginaPrincipal extends javax.swing.JFrame {
 
     private final Connection con;
+    static String usuario;
     
     public PaginaPrincipal(Connection con) {
         this.con = con;
@@ -20,7 +21,10 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         this.setTitle("Página Principal");
         this.setResizable(false);
     }
-
+    
+    public static void setUsuario(String nombreUsuario) {
+        usuario = nombreUsuario;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
